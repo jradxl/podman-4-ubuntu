@@ -1,7 +1,0 @@
-#Secret Enviroment Variables
-#Copy env-sample to .env and edit your values
-
-username="user"
-useremail="user@example.com"
-userkey="some-long-secret-string"
-

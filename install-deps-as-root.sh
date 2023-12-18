@@ -1,6 +1,9 @@
 #!/bin/bash
 
 echo "Installing dependencies for Podman v4, using root"
+
+sudo apt update && sudo apt upgrade
+
 sudo apt-get install \
   btrfs-progs \
   git \
@@ -25,7 +28,4 @@ sudo apt-get install \
   wget \
   curl
 
-python3 -m pip install lastversion
-
 exit 0
-
