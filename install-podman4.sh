@@ -10,14 +10,20 @@ if [[ $(rye version) ]]; then
    rye install --force lastversion
    lastversion --version
 else
-  echo "RYE not installed. Installing PIPX as root"
-  sudo apt update && sudo apt upgrade && sudo apt install pipx
-  pipx ensurepath
-  pipx install lastversion
-  $HOME/.local/bin/lastversion --version
-  echo "You will need to logout/in to update PATH"
-  echo "This install script will then continue"
-  exit 0
+  echo "RYE not installed. Checking for PIPX..."
+  if command -v pipx --version > /dev/null 2>&1 ; then
+    echo "PIPX found with version: $(pipx --version)"
+  else
+    echo "Installing PIPX as root..."
+    sudo apt update && sudo apt upgrade && sudo apt install pipx
+    pipx ensurepath
+    echo "Using PIPX to install LASTVERSION"
+    pipx install lastversion
+    $HOME/.local/bin/lastversion --version
+    echo "You will need to logout/in to update PATH"
+    echo "and when restarted, this install script will then continue"
+    exit 0
+  fi
 fi
 
 #Check for a few to see if install script should run.
