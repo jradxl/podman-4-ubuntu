@@ -212,11 +212,11 @@ else
 fi
 
 ##NOTE: The version string here is puzzling and might be a bug. Thus this fudge may break
-latest_catatonit=$(lastversion https://github.com/openSUSE/catatonit)_catatonit
+latest_catatonit=$(lastversion https://github.com/openSUSE/catatonit)
 echo "Latest catatonit is: ${latest_catatonit}"
 if command -v catatonit > /dev/null 2>&1 ; then
     current_catatonit=$(catatonit -V )
-    current_catatonit=${current_catatonit: 13}
+    current_catatonit=${current_catatonit: 13:5}
     echo "Current catatonit is: ${current_catatonit}"
 else
     echo "catatonit not installed"
@@ -233,11 +233,11 @@ else
 fi
 
 ##NOTE: The version string here is puzzling and might be a bug. Thus this fudge may break
-latest_fuseoverlayfs=$(lastversion https://github.com/containers/fuse-overlayfs)-dev
+latest_fuseoverlayfs=$(lastversion https://github.com/containers/fuse-overlayfs)
 echo "Latest fuseoverlayfs is: ${latest_fuseoverlayfs}"
 if command -v fuse-overlayfs > /dev/null 2>&1 ; then
     current_fuseoverlayfs=$(fuse-overlayfs --version | grep fuse-overlayfs)
-    current_fuseoverlayfs=${current_fuseoverlayfs: 24}
+    current_fuseoverlayfs=${current_fuseoverlayfs: 24:4}
     echo "Current fuseoverlayfs is: ${current_fuseoverlayfs}"
 else
     echo "fuse-overlayfs not installed"
