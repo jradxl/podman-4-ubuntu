@@ -4,7 +4,7 @@
 
 The installation of Podman v4 on Ubuntu is awkward...
 
-This script installs already build binaries if available and builds PODMAN from source.\
+This script installs already build binaries of helper programs if available and builds PODMAN from source.\
 Only for AMD64
 
 On Ubuntu Jammy the version in the archive is v3, on Lunar and Mantic it is 4.3\
