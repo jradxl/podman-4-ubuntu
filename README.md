@@ -37,7 +37,7 @@ apt's KEY\
 
 ### TESTING
 Create a new user on your machine...\
-`adduser podman1`
+`adduser podman1`\
 `adduser podman1 sudo`
 
 Then SSH to this account...\
