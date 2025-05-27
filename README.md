@@ -1,18 +1,22 @@
-# Podman 4 Ubuntu
+# Podman For Ubuntu
 
-## Scripts to install latest version of Podman v4 on Ubuntu Jammy or Mantic
+## Scripts to install latest version of Podman v5 on Ubuntu
 
-The installation of Podman v4 on Ubuntu is awkward...
+The installation of Podman v5 on Ubuntu is simple once you've tried it!!  
 
-This script installs already built binaries of helper programs if available and builds PODMAN from source.\
+This script installs already built binaries of some helper programs if available and builds PODMAN from source.\  
+CONMON has to be built to get the systemd and journald support.\  
+
 Only for AMD64
 
-On Ubuntu Jammy the version in the archive is v3, on Lunar and Mantic it is 4.3\
-At time of updating the project PODMON is 4.8
+On Ubuntu Jammy the version in the archive is v3, on Lunar and Mantic it is 4.3\  
+On Ubuntu Noble it is 4.9.3 \  
+At time of updating the project PODMON is 5.5.0\  
 
-Only Podman ROOTLESS is supported here.\
-I can't get PODMAN to work as root using the install from this script.\
-To avoid confusions, ensure PODMAN and all helper binaries are remove from root, i.e `apt purge` etc
+BOTH Podman ROOTFULL and  ROOTLESS is supported.\
+I have found it's better to install all binaries and config files as SUDO/ROOT.\  
+
+To avoid confusions, ensure PODMAN and all helper binaries from Ubuntu Packages are remove from root, i.e `apt purge` etc\  
 
 ###  NOTES
 * `storage.conf` does not appear to be necessary, as `podman system reset` offers to remove it.
@@ -45,4 +49,4 @@ Then SSH to this account...\
 and clone this repository and run script.
 
 
-December 2023
+May 2025

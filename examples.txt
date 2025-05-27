@@ -1,0 +1,8 @@
+
+
+podman info
+podman search --limit 3 --filter=is-official nginx
+podman pull docker.io/library/nginx
+podman run --rm -it -p 8096:80  docker.io/library/nginx
+
+podman rmi $(podman images -aq)
