@@ -4,22 +4,34 @@
 
 The installation of Podman v5 on Ubuntu is simple once you've tried it!!  
 
-This script installs already built binaries of some helper programs if available and builds PODMAN from source.\  
-CONMON has to be built to get the systemd and journald support.\  
+This script installs already built binaries of some helper programs if available and builds PODMAN from source.  
+PASST is built from its source from https://passt.top  As this git repository is not github like I cannot use lastversion to detect an update, so it is built on every run of the script.  
+Also CONMON has to be built to get the systemd and journald support.  
+
 
 Only for AMD64
 
-On Ubuntu Jammy the version in the archive is v3, on Lunar and Mantic it is 4.3\  
-On Ubuntu Noble it is 4.9.3 \  
-At time of updating the project PODMON is 5.5.0\  
+On Ubuntu Jammy the version in the package archive is v3, on Lunar and Mantic it is 4.3 and on Ubuntu Noble it is 4.9.3  
+At time of updating this project, PODMON is 5.5.0  
 
-BOTH Podman ROOTFULL and  ROOTLESS is supported.\
-I have found it's better to install all binaries and config files as SUDO/ROOT.\  
+Both podman ROOTFULL and ROOTLESS are supported.
+I have found it's better to install all binaries and config files as SUDO/ROOT.  
 
-To avoid confusions, ensure PODMAN and all helper binaries from Ubuntu Packages are remove from root, i.e `apt purge` etc\  
+To avoid confusions, ensure PODMAN and all helper binaries from Ubuntu Packages are remove from root, i.e `apt purge` etc..  
+
+`get-ref-config-files.sh`  
+** Obtains what I believe are the refernces copies of the config files and stores them in directory `ref-config-files`  
+** These files change between versions. Ensure the config files in the root of this project are updated and deployed.
+** There are no config files in /usr/share/containers, or ${XDG_CONFIG_HOME/containers} unless the user adds them, so the files copied to /etc/containers are in use.
+
+`set-subuids.py`  
+** Man page for SUBUID(5) does allow for a syntax of UID:SUBID:Count, which is generated for users above UID=1000. This is a bit of fix and forget approach.
+
+`copy-files.sh`  
+** Allows copying of binaries and config files to appropiate places if needed.
 
 ###  NOTES
-* `storage.conf` does not appear to be necessary, as `podman system reset` offers to remove it.
+Both `$ podman system reset` and `# podman system reset` show directories in operation for storage.
 
 
 ### PING inside a container
