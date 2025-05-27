@@ -1,3 +1,5 @@
+### Just a helpful list ###
+
 
 
 podman info
@@ -6,3 +8,9 @@ podman pull docker.io/library/nginx
 podman run --rm -it -p 8096:80  docker.io/library/nginx
 
 podman rmi $(podman images -aq)
+
+
+Documents:
+
+-- Very useful
+https://github.com/containers/podman/blob/main/docs/tutorials/podman_tutorial.md
