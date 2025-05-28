@@ -67,8 +67,8 @@ If the `podman.sock` is poked, it triggers `podman.service` which runs the podma
 The `podman-4-ubuntu.sh`script uses podman's `make install PREFIX=/usr/local` so that the socket and service unit files are installed in `/usr/local/lib/systemd/system`. This location satisfies both root and user requirements.  
 ** Ensure no podman unit files are in `/etc/xdg/...`. I had some left over from a previous installation.  
 ** Enable the podman.socket  
-`# systemctl enable podman.socket`  
-`$ systemctl --user enable podman.socket`  
+`# systemctl enable --now podman.socket`  
+`$ systemctl --user enable --now podman.socket`  
 ** `podman.service` does not need to be enabled.  
 Use `podman info | grep APIVersion` to get the API version. Note that when using it needs a prefix of a `v`, so at time of writing I have `v5.5.0`.  
 ** Ensure that XDG_RUNTIME_DIR is correctly set with, `systemctl --user show-environment | sort` which gives `XDG_RUNTIME_DIR=/run/user/1000` for example.  
@@ -80,7 +80,7 @@ Use `podman info | grep APIVersion` to get the API version. Note that when using
 ### Portainer on Podman
 https://docs.portainer.io/sts/start/install-ce/server/podman/linux  
 ** Sadly Portainer only supports ROOTFUL podman containers.  
-** Now the podman socket is enabled, `# systemctl enable podman.socket`, we can instaniate Portainer with a `podman run` command.
+** Now the podman socket is enabled, `# systemctl enable --now podman.socket`, we can instaniate Portainer with a `podman run` command.
 
 `podman volume create portainer_data`
 
