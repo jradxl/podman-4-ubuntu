@@ -14,7 +14,7 @@ Only for AMD64
 On Ubuntu Jammy the version in the package archive is v3, on Lunar and Mantic it is 4.3 and on Ubuntu Noble it is 4.9.3  
 At time of updating this project, PODMON is 5.5.0  
 
-Both podman ROOTFULL and ROOTLESS are supported.
+Both podman ROOTFUL and ROOTLESS are supported.
 I have found it's better to install all binaries and config files as SUDO/ROOT.  
 
 To avoid confusions, ensure PODMAN and all helper binaries from Ubuntu Packages are remove from root, i.e `apt purge` etc..  
@@ -59,6 +59,22 @@ Create a new user on your machine...\
 Then SSH to this account...\
 `ssh podman1@localhost` \
 and clone this repository and run script.
+
+
+### Podman API
+In spite of podman not having a running daemon it is still possible to interact with an API.
+If the `podman.sock` is poked, it triggers `podman.service` which runs the podman executable to respond.
+The `podman-4-ubuntu.sh`script uses podman's `make install PREFIX=/usr/local` so that the socket and service unit files are installed in `/usr/local/lib/systemd/system`. This location satisfies both root and user requirements.  
+** Ensure no podman unit files are in `/etc/xdg/...`. I had some left over from a previous installation.  
+** Enable the podman.socket  
+`# systemctl enable podman.socket`  
+`$ systemctl --user enable podman.socket`  
+** `podman.service` does not need to be enabled.  
+Use `podman info | grep APIVersion` to get the API version. Note that when using it needs a prefix of a `v`, so at time of writing I have `v5.5.0`.  
+** Ensure that XDG_RUNTIME_DIR is correctly set with, `systemctl --user show-environment | sort` which gives `XDG_RUNTIME_DIR=/run/user/1000` for example.  
+** For a User, poke the API with, `curl --unix-socket $XDG_RUNTIME_DIR/podman/podman.sock http://d/v5.5.0/libpod/info`.  
+** For Root, poke the API with, `curl --unix-socket /run/podman/podman.sock http://d/v5.5.0/libpod/info`
+** I found getting above working was very fussy. You might try `podman system reset` and many reboots to be sure all is working.  
 
 
 May 2025
