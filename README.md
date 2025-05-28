@@ -77,4 +77,14 @@ Use `podman info | grep APIVersion` to get the API version. Note that when using
 ** I found getting above working was very fussy. You might try `podman system reset` and many reboots to be sure all is working.  
 
 
+### Portainer on Podman
+https://docs.portainer.io/sts/start/install-ce/server/podman/linux  
+** Sadly Portainer only supports ROOTFUL podman containers.  
+** Now the podman socket is enabled, `# systemctl enable podman.socket`, we can instaniate Portainer with a `podman run` command.
+
+`podman volume create portainer_data`
+
+`podman run -d -p 9000:9000 --name portainer --restart=unless-stopped --privileged -v /run/podman/podman.sock:/var/run/docker.sock -v portainer_data:/data  docker.io/portainer/portainer-ce:latest`
+
+
 May 2025
