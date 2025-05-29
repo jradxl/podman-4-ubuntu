@@ -5,7 +5,7 @@
 The installation of Podman v5 on Ubuntu is simple once you've tried it!!  
 
 This script installs already built binaries of some helper programs if available and builds PODMAN from source.  
-PASST is built from its source from https://passt.top  As this git repository is not github like I cannot use lastversion to detect an update, so it is built on every run of the script.  
+PASST is built from its source from https://passt.top  
 Also CONMON has to be built to get the systemd and journald support.  
 
 

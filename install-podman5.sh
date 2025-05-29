@@ -94,22 +94,37 @@ echo ""
 # sudo apt-get purge passt
 build-passt() {
     echo "Installing/Upgrading PASST/PASTA..."
-    echo "NO version checks are possible, so always built."
-    rm -rf "$HOME/podman/builds/passt"
-    git clone https://passt.top/passt "$HOME/podman/builds/passt"    
+    #Already cloned in parent, to get version
     cd "$HOME/podman/builds/passt" || exit 1
     make
     echo "Installing to /usr/local so will need SUDO password."
+    ## make install seems to have a problem overwriting.
+    sudo rm -rf /usr/local/bin/passt.avx2
+    sudo rm -rf /usr/local/bin/passt-repair
+    sudo rm -rf /usr/local/bin/passt        
+    sudo rm -rf /usr/local/bin/pasta        
     sudo make install
+    cd "$cwd" || exit 1
 }
 
-## PASST is not on github so does not have method to check versions
-## Hence build always
-#Needs sudo apt-get install expect
-current_passt=$(unbuffer passt --version | grep passt)
+#Needs sudo apt-get install expect. Is BUG and has been reported
+current_passt=$(unbuffer passt --version | grep passt | awk '{print $2}' | cut -c1-18)
 echo "Current PASST/PASTA is: ${current_passt}"
 echo "PASST/PASTA install location is: $(which passt)"
-build-passt
+rm -rf "$HOME/podman/builds/passt"
+#Need to clone to get latest git tag
+git clone -q https://passt.top/passt "$HOME/podman/builds/passt"    
+if [[ ! -d "$HOME/podman/builds/passt" ]]; then
+    echo "Error: Cloning PASST/PASTA. Quitting."
+    exit 1
+fi
+latest_passt=$(cd $HOME/podman/builds/passt || exit 1 && git tag | tail -n 1 | cut -c1-18)
+echo "Latest passt/pasta is: $latest_passt"
+if [[ "$current_passt" == "$latest_passt" ]]; then
+    echo "passt/pasta is the latest version"
+else
+    build-passt
+fi
 cd "$cwd" || exit 1
 
 echo ""
@@ -166,6 +181,29 @@ else
       echo "Failed to get slirp4netns-x86_64"
       exit 1
     fi
+fi
+
+echo ""
+## AARDVARK-DNS ##
+latest_aardvark=$(lastversion https://github.com/containers/aardvark-dns)
+echo "Latest aardvark-dns is: v$latest_aardvark"
+
+if command -v aardvark-dns> /dev/null 2>&1 ; then
+    current_aardvark="$(aardvark-dns -V)"
+    current_aardvark="${current_aardvark: 13}"
+    echo "Current aardvark-dns is: v${current_aardvark}"
+else
+    echo "aardvark-dns not installed"
+    current_aardvark=""
+fi
+if [[ "${current_aardvark}" == "${latest_aardvark}" ]]; then
+    echo "aardvark-dns is the latest version"
+else
+    ### THIS IS A BINARY! https://github.com/containers/aardvark-dns/releases/download/v1.15.0/aardvark-dns.gz
+    wget https://github.com/containers/aardvark-dns/releases/download/v"${latest_aardvark}"/aardvark-dns.gz
+    gunzip -f ./aardvark-dns.gz
+    chmod +x ./aardvark-dns
+    mv ./aardvark-dns "$HOME/podman/bin/"
 fi
 
 echo ""
@@ -328,13 +366,13 @@ cd "$cwd" || exit 1
 ##DEPLOY##
 # Some are used from PATH, hence /usr/local/bin whereas
 # some are used from /usr/local/libexec/podman
-# It's easier to copy all to both locations!
+# It's easier to have all to both locations so that my version checks work!
 echo ""
 echo "Deploying binaries... Will overwrite all..."
 for f in "$HOME"/podman/bin/* ; do  sudo cp "$f" /usr/local/bin ; done
 for f in "$HOME"/podman/bin/* ; do  sudo cp "$f" /usr/local/libexec/podman ; done
     
-echo "Deploying files... Will NOT overwrite if already present."
+echo "Deploying config files... Will NOT overwrite if already present."
 echo ""
 containers_dir="/etc/containers"
 copy-config-files() {
@@ -358,6 +396,7 @@ fi
 echo ""
 echo "## ===== SUMMARY ===== ##"
 echo "NETAVARK version installed: $(netavark --version)"
+echo "AARDVARK_DNS version installed: $(aardvark-dns --version)"
 echo "RUNC version installed: $(runc --version | grep "runc version")"
 echo "CRUN version installed: $(crun --version | grep "crun version")"
 echo "CONMON installed: $(conmon --version | grep "conmon version")"
