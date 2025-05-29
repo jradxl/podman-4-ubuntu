@@ -1,0 +1,20 @@
+[Unit]
+Description=MyApp MariaDB Database Container
+
+[Service]
+Restart=always
+
+[Container]
+Label=app=myapp
+ContainerName=myapp-db
+Image=docker.io/library/mariadb:latest
+Network=myapp.network
+Volume=myapp-db.volume:/var/lib/mysql
+Environment=MYSQL_ROOT_PASSWORD=password
+Environment=MYSQL_USER=root
+Environment=MYSQL_DATABASE=wordpress
+Environment=MYSQL_PASSWORD=password
+
+[Install]
+WantedBy=multi-user.target default.target
+

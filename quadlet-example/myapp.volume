@@ -1,0 +1,6 @@
+[Unit]
+Description=MyApp Container Volume
+
+[Volume]
+Label=app=myapp
+

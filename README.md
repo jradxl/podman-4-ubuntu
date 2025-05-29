@@ -95,5 +95,28 @@ Dockge, https://github.com/louislam/dockge, does appear to work for rootless pod
 `cd /home/john/Dockge`
 `podman run --replace -d -p 5001:5001 --name dockge --restart=unless-stopped -v /home/john/Dockge/stacks:/home/john/Dockge/stacks -v $XDG_RUNTIME_DIR/podman/podman.sock:/var/run/docker.sock -v ./data:/app/data -e DOCKGE_STACKS_DIR=/home/john/Dockge/stacks docker.io/louislam/dockge:latest`
 
+### podman-generate-systemd
+Has been deprecated in favour of Quadlets
+
+### Restarting On Boot
+`systemctl enable --now podman-restart.service`.  
+`systemctl --user enable --now podman-restart.service`.  
+Will restart containers that have been set `--restart=always`.  
+The service runs the command, `podman start --all --filter restart-policy=always`.  
+
+### Quadlets
+** See `man podman-systemd.unit`, the precursor project, https://github.com/containers/quadlet, and https://matduggan.com/replace-compose-with-quadlet/  
+** It would appear a quadlet `.container` file generates a `.service` file which results in systemd executing a `podman run` .. command. Seems to be a re-implimentaton of a compose file!  
+** I've adapted the example from Mat Duggan's article and the files are in the directory, `quadlet-example`.  
+Here are the instructions...  
+Pull the Images first, `podman pull docker.io/library/mariadb:latest` and `podman pull docker.io/wordpress:latest`
+Let's use ROOTLESS podman, so copy the example files to `~/.config/containers/systemd`, creating directories if needed.  
+** Run `systemctl --user daemon-reload`, this generates the .service files etc. 
+** Start the App with, `systemctl --user start myapp`, this will start database too.
+** Use the typical podman and systemctl tools to examine running containers.
+** I guess this a robust way of starting services for production use. I don't know how "unless-stopped" containers are handled, where if it was stopped at the time of a server reboot, it should not be started on boot.
+
+### Running ROOTLESS: Non-Root within the container
+TODO
 
 May 2025

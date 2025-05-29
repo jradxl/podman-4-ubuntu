@@ -1,0 +1,21 @@
+[Unit]
+Description=MyApp Container
+Requires=mariadb.service
+After=mariadb.service
+
+[Container]
+Label=app=myapp
+ContainerName=wordpress
+Image=docker.io/wordpress:latest
+Network=myapp.network
+Volume=myapp.volume:/var/www/html/wp-content
+Environment=WORDPRESS_DB_NAME=wordpress
+Environment=WORDPRESS_TABLE_PREFIX=wp_
+Environment=WORDPRESS_DB_HOST=myapp-db
+Environment=WORDPRESS_DB_USER=root
+Environment=WORDPRESS_DB_PASSWORD=password
+PublishPort=9123:80
+
+[Install]
+WantedBy=multi-user.target default.target
+
