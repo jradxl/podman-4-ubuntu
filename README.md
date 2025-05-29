@@ -87,4 +87,13 @@ https://docs.portainer.io/sts/start/install-ce/server/podman/linux
 `podman run -d -p 9000:9000 --name portainer --restart=unless-stopped --privileged -v /run/podman/podman.sock:/var/run/docker.sock -v portainer_data:/data  docker.io/portainer/portainer-ce:latest`
 
 
+### Dockge for Rootless Podman
+Dockge, https://github.com/louislam/dockge, does appear to work for rootless podman. The location of the stacks directory appears a bit odd owning to the constraints specified in Dockge's documentation.  
+
+`mkdir -p /home/john/Dockge/stacks`  
+`mkdir -p /home/john/Dockge/data`  
+`cd /home/john/Dockge`
+`podman run --replace -d -p 5001:5001 --name dockge --restart=unless-stopped -v /home/john/Dockge/stacks:/home/john/Dockge/stacks -v $XDG_RUNTIME_DIR/podman/podman.sock:/var/run/docker.sock -v ./data:/app/data -e DOCKGE_STACKS_DIR=/home/john/Dockge/stacks docker.io/louislam/dockge:latest`
+
+
 May 2025
