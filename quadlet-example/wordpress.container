@@ -1,0 +1,22 @@
+[Unit]
+Description=Wordpress Container
+Requires=mariadb.service
+After=mariadb.service
+
+[Container]
+Label=app=wordpress
+ContainerName=wordpress
+Image=docker.io/wordpress:latest
+Network=wordpress.network
+Volume=wordpress.volume:/var/www/html
+Environment=WORDPRESS_DB_HOST=mariadb
+Environment=WORDPRESS_DB_NAME=wordpress
+Environment=WORDPRESS_DB_USER=wordpress
+Environment=WORDPRESS_DB_PASSWORD=wordpress
+Environment=WORDPRESS_TABLE_PREFIX=wp_
+
+PublishPort=9124:80
+
+[Install]
+WantedBy=multi-user.target default.target
+

@@ -1,0 +1,6 @@
+[Unit]
+Description=Wordpress Network
+
+[Network]
+Label=app=wordpress
+

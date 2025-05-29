@@ -1,6 +1,0 @@
-[Unit]
-Description=MyApp Network
-
-[Network]
-Label=app=myapp
-

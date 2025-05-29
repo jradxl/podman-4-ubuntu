@@ -1,6 +1,0 @@
-[Unit]
-Description=MyApp Database Container Volume
-
-[Volume]
-Label=app=myapp
-

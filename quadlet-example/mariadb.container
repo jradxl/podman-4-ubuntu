@@ -1,19 +1,19 @@
 [Unit]
-Description=MyApp MariaDB Database Container
+Description=Wordpress MariaDB Database Container
 
 [Service]
 Restart=always
 
 [Container]
-Label=app=myapp
-ContainerName=myapp-db
+Label=app=wordpress
+ContainerName=mariadb
 Image=docker.io/library/mariadb:latest
-Network=myapp.network
-Volume=myapp-db.volume:/var/lib/mysql
-Environment=MYSQL_ROOT_PASSWORD=password
-Environment=MYSQL_USER=root
+Network=wordpress.network
+Volume=mariadb-db.volume:/var/lib/mysql
 Environment=MYSQL_DATABASE=wordpress
-Environment=MYSQL_PASSWORD=password
+Environment=MYSQL_USER=wordpress
+Environment=MYSQL_PASSWORD=wordpress
+Environment=MYSQL_ROOT_PASSWORD=wordpress
 
 [Install]
 WantedBy=multi-user.target default.target

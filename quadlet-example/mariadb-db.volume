@@ -1,0 +1,6 @@
+[Unit]
+Description=MariaDB Database Container Volume
+
+[Volume]
+Label=app=wordpress
+
